@@ -22,35 +22,32 @@ export const product = [
     },
     {
         image: Category_image2,
-        text:'punda'
+        text:'Brinjal'
     },
     {
         image: Category_image3,
-        text:'Banana'
+        text:'lady\'s Finger'
     },
     {
         image: Category_image4,
-        text:'Banana'
+        text:'Ridge Gaurd'
     },
     {
         image: Category_image5,
         text:'Banana'
     },
-    {
-        image: Category_image6,
-        text:'Banana'
-    },
+    
     {
         image: Category_image7,
-        text:'Banana'
+        text:'Sweet Corn'
     },
     {
         image: Category_image8,
-        text:'Banana'
+        text:'Cucumber'
     },
     {
         image: Category_image9,
-        text:'Banana'
+        text:'Coconut'
     },
     {
         image: Category_image10,

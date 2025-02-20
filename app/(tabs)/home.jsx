@@ -1,272 +1,218 @@
-import React, { useState } from 'react'
-import { Text, View, Image,TextInput, Pressable, ScrollView, StyleSheet, Dimensions, Touchable, TouchableOpacity, FlatList, SectionList, FlatListComponent } from 'react-native';
+import React, { useState, useMemo } from 'react';
+import {
+  Text,
+  View,
+  Image,
+  TextInput,
+  TouchableOpacity,
+  ScrollView,
+  StyleSheet,
+  Dimensions,
+  FlatList,
+} from 'react-native';
 import Ionicons from '@expo/vector-icons/Ionicons';
-import { Colors } from '../../constants/Colors'
 import { useRouter } from 'expo-router';
 import Carousel from 'react-native-reanimated-carousel';
-import Category_image1 from './../../assets/images/10000027_31-fresho-banana-robusta.jpg';
-import Category_image2 from './../../assets/images/10000054_18-fresho-brinjal-bottle-shape.jpg';
-import Category_image3 from './../../assets/images/10000143_15-fresho-ladies-finger.jpg';
-import Category_image4 from './../../assets/images/10000175_18-fresho-ridge-gourd.jpg';
-import Category_image5 from './../../assets/images/10000366_12-fresho-parwal.jpg';
-import Category_image6 from './../../assets/images/20000911_35-fresho-kiwi-green.jpg';
-import Category_image7 from './../../assets/images/40004992_15-fresho-sweet-corn.jpg';
-import Category_image8 from './../../assets/images/40018523_5-fresho-cucumber-english.jpg';
-import Category_image9 from './../../assets/images/40057966_8-fresho-tender-coconut-medium.jpg';
-import Category_image10 from './../../assets/images/20000911_35-fresho-kiwi-green.jpg';
-import Category_image11 from './../../assets/images/40004992_15-fresho-sweet-corn.jpg';
-import Category_image12 from './../../assets/images/40018523_5-fresho-cucumber-english.jpg';
-import Category_image13 from './../../assets/images/20000911_35-fresho-kiwi-green.jpg';
-import Category_image14 from './../../assets/images/10000027_31-fresho-banana-robusta.jpg';
-import Category_image15 from './../../assets/images/10000054_18-fresho-brinjal-bottle-shape.jpg';
-import Category_image16 from './../../assets/images/20000911_35-fresho-kiwi-green.jpg';
-import {product } from '../../data/itemData';
+import { Colors } from '../../constants/Colors';
+import { product } from '../../data/itemData';
 
+const Home = () => {
+  const width = Dimensions.get('window').width;
+  const router = useRouter();
+  const [searchQuery, setSearchQuery] = useState('');
 
-export default function Home(){
-    const width = Dimensions.get('window').width
+  const banners = useMemo(() => [
+    require('./../../assets/images/banner1.jpg'),
+    require('./../../assets/images/front.jpg'),
+  ], []);
 
-    const [pagingEnabled, setpagingEnabled] = useState(true)
+  const categories = useMemo(() => [
+    { id: 1, name: 'Fruits', image: require('./../../assets/images/fruits.jpg') },
+    { id: 2, name: 'Vegetables', image: require('./../../assets/images/vegetables.jpg') },
+    { id: 3, name: 'Dairy', image: require('./../../assets/images/dairy.jpg') },
+  ], []);
 
-    const list = [
-        {
-            id:1,
-            title: 'First item',
-            image:require('./../../assets/images/front.jpg')
-        },
-        {
-            id:2,
-            title: 'Second item',
-            image:require('./../../assets/images/front2.jpg')
-        },
-        {
-            id:3,
-            title: 'thrid item',
-            image:require('./../../assets/images/front.jpg')
-        },
-        {
-            id:4,
-            title: 'forth item',
-            image:require('./../../assets/images/front.jpg')
-        }
-    ]
+  const deals = useMemo(() => [
+    { id: 1, name: '₹20', image: require('./../../assets/images/10000027_31-fresho-banana-robusta.jpg') },
+    { id: 2, name: '₹35', image: require('./../../assets/images/40004992_15-fresho-sweet-corn.jpg') },
+    { id: 3, name: '₹60', image: require('./../../assets/images/40057966_8-fresho-tender-coconut-medium.jpg') },
+  ], []);
 
-    const config = {
-        product : [
-            {
-                image: Category_image1,
-                text:'Banana'
-            },
-            {
-                image: Category_image2,
-                text:'Banana'
-            },
-            {
-                image: Category_image3,
-                text:'Banana'
-            },
-            {
-                image: Category_image4,
-                text:'Banana'
-            },
-            {
-                image: Category_image5,
-                text:'Banana'
-            },
-            {
-                image: Category_image6,
-                text:'Banana'
-            },
-            {
-                image: Category_image7,
-                text:'Banana'
-            },
-            {
-                image: Category_image8,
-                text:'Banana'
-            },
-            {
-                image: Category_image9,
-                text:'Banana'
-            },
-            {
-                image: Category_image10,
-                text:'Banana'
-            },
-            {
-                image: Category_image11,
-                text:'Banana'
-            },
-            {
-                image: Category_image12,
-                text:'Banana'
-            },
-            {
-                image: Category_image13,
-                text:'Banana'
-            },
-            {
-                image: Category_image14,
-                text:'Banana'
-            },
-            {
-                image: Category_image15,
-                text:'Banana'
-            },
-            {
-                image: Category_image16,
-                text:'Banana'
-            }
-        ]
-    }
+  const filteredProducts = product.filter(item =>
+    item.text.toLowerCase().includes(searchQuery.toLowerCase())
+  );
 
-    const Profile = ()=>{
-        console.log('nee oru chutiya da');
-        
-    }
+  return (
+    <ScrollView style={styles.container}>
+      <View style={styles.header}>
+        <Image
+          source={require('./../../assets/images/FC_logo-removebg-preview.png')}
+          style={styles.logo}
+        />
+        <TouchableOpacity onPress={() => router.push('/products/profile')}>
+          <Ionicons name="person-circle-outline" size={35} color="black" />
+        </TouchableOpacity>
+      </View>
 
-    const router = useRouter();
-    return(
-        <ScrollView style={{
-            gap:6
-        }}>
-            <View style={{
-            display:'flex',
-            marginTop:20,
-            padding:20,
-            flexDirection:'row',
-            alignItems:'center',
-            justifyContent:'space-between'
-            }}>
-            <Image source={require('./../../assets/images/FC_logo-removebg-preview.png')}
-            style={{
-                width:230,
-                height:50
-            }}/>
-            <TouchableOpacity onPress={Profile}>
-              <Ionicons name="person-circle-outline" size={35} color="black" />
-            </TouchableOpacity>
+      <View style={styles.searchBar}>
+        <Ionicons name="search-outline" size={24} color="black" />
+        <TextInput 
+          placeholder='Search' 
+          style={styles.searchInput} 
+          value={searchQuery} 
+          onChangeText={setSearchQuery} 
+        />
+      </View>
 
-            </View>
-            <View style={{
-                borderWidth:1,
-                borderColor:Colors.PRIMARY,
-                borderRadius:10,
-                padding:12,
-                margin:8,
-                display:'flex',
-                flexDirection:'row',
-                alignItems:'center',
-                gap:5,
-            }}>
-                <Text>
-                <Ionicons name="search-outline" size={24} color="black" />
-                </Text>
-                <TextInput placeholder='Search'>
-                </TextInput>
-            </View>
-            <View style={{
-                margin:8,
-            }}>
-                <Image source={require('./../../assets/images/front.jpg')}
-                style={{
-                    width:'100%',
-                    height:250,
-                    borderRadius:12,
-                }}/>
-            </View>
-            <View style={{
-                // flex: 1,
-            }}>
-                <Carousel
-                width={width}
-                height={250}
-                data={list}
-                autoPlay={true}
-                pagingEnabled={pagingEnabled}
-                scrollAnimationDuration={1000}
-                renderItem={({ item }) => (
-                    <View style={styles2.CarouselItem}>
-                        <Image style={{
-                            borderRadius: 15, 
-                            width: '97%', 
-                            marginTop: 5}} 
-                        source={item.image}/>
-                    </View>
-                )}
-                />
-            </View>
-            <Text style={{
-                fontSize:20,
-                fontFamily:'outfit-bold',
-                padding:20,
-            }}>Shop By Category</Text>
-            <View style={{
-                    display:'flex',
-                    flexDirection:'row',
-                    justifyContent:'space-evenly',
-                    flexWrap:'wrap'
-                }}>
-                {config.product.map((item)=>(
-                <TouchableOpacity activeOpacity={0.7} onPress={() => router.push('auth/product')}>
-                    <Image source={item.image}
-                    style={styles.products}/>
-                    <Text style={{
-                        textAlign:'center'
-                    }}>{item.text}</Text>
-                </TouchableOpacity>
-                ))}
-            </View>
-            <View>
-                
-            </View>
-            <View style={{
-                backgroundColor:'#e7e7e7'
-            }}>
-                <FlatList horizontal data={product} renderItem={({item,index})=>(
-                    <View style={{
-                        display:'flex',
-                        flexDirection:'row',
-                        justifyContent:'space-evenly',
-                        flexWrap:'wrap'
-                    }}>
-                        <TouchableOpacity activeOpacity={0.7} onPress={() => router.push('auth/product')}>
-                        <Image source={item.image}
-                        style={styles.products}/>
-                        <Text style={{
-                            textAlign:'center'
-                        }}>{item.text}</Text>
-                        </TouchableOpacity>
-                    </View>
-                )}/>
-                    </View>
-        </ScrollView>
-    )
-}
+      <Carousel
+        width={width}
+        height={200}
+        autoPlay
+        data={banners}
+        scrollAnimationDuration={1000}
+        renderItem={({ item }) => (
+          <Image source={item} style={styles.banner} />
+        )}
+      />
+
+      <Text style={styles.sectionTitle}>Shop By Category</Text>
+      <FlatList
+        data={categories}
+        keyExtractor={(item) => item.id.toString()}
+        numColumns={3}
+        columnWrapperStyle={styles.row}
+        renderItem={({ item }) => (
+          <TouchableOpacity
+            style={styles.categoryItem}
+            onPress={() => router.push('/products/fruits')}>
+            <Image source={item.image} style={styles.categoryImage} />
+            <Text style={styles.categoryText}>{item.name}</Text>
+          </TouchableOpacity>
+        )}
+        showsVerticalScrollIndicator={false}
+      />
+
+      <Text style={styles.sectionTitle}>Deals of the Day</Text>
+      <FlatList
+        horizontal
+        data={deals}
+        keyExtractor={(item) => item.id.toString()}
+        renderItem={({ item }) => (
+          <TouchableOpacity
+            style={styles.dealItem}
+            onPress={() => router.push('/products/product')}>
+            <Image source={item.image} style={styles.dealImage} />
+            <Text style={styles.dealText}>{item.name}</Text>
+          </TouchableOpacity>
+        )}
+        showsHorizontalScrollIndicator={false}
+      />
+
+      <Text style={styles.sectionTitle}>Recommended For You</Text>
+      <FlatList
+        horizontal
+        data={filteredProducts}
+        keyExtractor={(item, index) => index.toString()}
+        renderItem={({ item }) => (
+          <TouchableOpacity
+            style={styles.productItem}
+            onPress={() => router.push('/products/product')}>
+            <Image source={item.image} style={styles.productImage} />
+            <Text style={styles.productText}>{item.text}</Text>
+            <Text style={styles.productPrice}>{item.price}</Text>
+          </TouchableOpacity>
+        )}
+        showsHorizontalScrollIndicator={false}
+      />
+    </ScrollView>
+  );
+};
 
 const styles = StyleSheet.create({
-  products:{
-    width:88,
-    height:88,
-    margin:7,
-    marginBottom:0,
-    borderRadius:12,
-    gap:8
-  }
-})
-
-const styles2 = StyleSheet.create({
-  CarouselItem:{
-    flex:1,
-    justifyContent:'center',
-    overflow:'hidden',
-    width:"100%",
-    margin:8,
-    borderRadius:12
+  container: {
+    flex: 1,
+    backgroundColor: '#fff',
   },
-  img:{
-    width:'100%',
-    height:'100%',
-  }
-})
+  header: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'space-between',
+    padding: 15,
+    marginTop: 30,
+    marginRight: 5,
+  },
+  logo: {
+    width: 200,
+    height: 50,
+  },
+  searchBar: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    borderWidth: 1,
+    borderColor: Colors.PRIMARY,
+    borderRadius: 10,
+    padding: 12,
+    margin: 10,
+  },
+  searchInput: {
+    flex: 1,
+    marginLeft: 10,
+  },
+  banner: {
+    width: '100%',
+    height: 200,
+    borderRadius: 1,
+    marginVertical: 10,
+  },
+  sectionTitle: {
+    fontSize: 20,
+    fontWeight: 'bold',
+    padding: 20,
+  },
+  categoryItem: {
+    flex: 1,
+    alignItems: 'center',
+    margin: 10,
+  },
+  categoryImage: {
+    width: 100,
+    height: 100,
+    borderRadius: 12,
+  },
+  categoryText: {
+    textAlign: 'center',
+    marginTop: 5,
+  },
+  dealItem: {
+    margin: 10,
+  },
+  dealImage: {
+    width: 150,
+    height: 150,
+    borderRadius: 12,
+  },
+  dealText: {
+    textAlign: 'center',
+    marginTop: 5,
+  },
+  productItem: {
+    margin: 10,
+  },
+  productImage: {
+    width: 150,
+    height: 150,
+    borderRadius: 12,
+  },
+  productText: {
+    textAlign: 'center',
+    marginTop: 5,
+  },
+  productPrice: {
+    textAlign: 'center',
+    marginTop: 5,
+    color: Colors.PRIMARY,
+    fontWeight: 'bold',
+  },
+});
 
+export default Home;

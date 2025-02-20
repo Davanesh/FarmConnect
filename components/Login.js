@@ -1,169 +1,166 @@
-import { View, Text, Image, StyleSheet,TouchableOpacity, Modal, FlatList } from 'react-native'
-import React, { useState } from 'react'
-import { Colors } from '@/constants/Colors'
+import { View, Text, Image, StyleSheet, TouchableOpacity, Modal, FlatList } from 'react-native';
+import React, { useState } from 'react';
+import { Colors } from '@/constants/Colors';
 import { useRouter } from 'expo-router';
-import i18next, {languageResources} from './../services/i18next';
-import {useTranslation} from 'react-i18next';
+import i18next, { languageResources } from './../services/i18next';
+import { useTranslation } from 'react-i18next';
 import languagesList from './../services/languagesList.json';
 import Ionicons from '@expo/vector-icons/Ionicons';
 
 export default function Login() {
   const router = useRouter();
-  const {t} = useTranslation();
-  const [visible, setvisible] = useState(false);
-  const changeLng = lng => {
+  const { t } = useTranslation();
+  const [visible, setVisible] = useState(false);
+
+  const changeLng = (lng) => {
     i18next.changeLanguage(lng);
-    setvisible(false);
+    setVisible(false);
   };
 
   return (
-    <View>
-      <View style={{
-        borderColor:Colors.GRAY,
-        marginTop:40,
-        display:'flex',
-        alignItems:'center',
-        flexDirection:'row',
-        margin:12,
-        justifyContent:'space-between',
-      }}>
-        <Image source={require('./../assets/images/plain FC.png')}
-        style={{
-          width:'55%',
-          height:30,
-          marginLeft:20,
-        }}/>
-          {/* lng */}
-          <Modal visible={visible} 
-            onRequestClose={() => setvisible(false)}>
-            <View style={{
-              backgroundColor:'#f2f2f2',
-              display:'flex',
-            }}>
-              <Image source={require('./../assets/images/plain FC.png')}
-              style={{
-                width:'55%',
-                height:30,
-                marginLeft:30,
-                marginTop:0,
-                marginBottom:14
-              }}/>
-                
-            </View>
-          <View style={styles.lng}>
-          <Text style={{
-              fontSize:26,
-              padding:12,
-            }}>Choose your language</Text>
-            <FlatList data={Object.keys(languageResources)}
-            renderItem={({item}) => (
-            <TouchableOpacity onPress={() => changeLng(item)}>
-              <Text style={{
-                fontSize:20,
-                display:'flex',
-                justifyContent:'center',
-                textAlign:'center',
-                gap:24,
-                padding:8,
-                borderWidth:1,
-                borderRadius:14,
-                margin:4
-              }}>{languagesList[item].nativeName}</Text>
-            </TouchableOpacity>
-          )}/>
-          </View>
-          </Modal>
-          <TouchableOpacity 
-          // style={styles.button}
-            onPress={() => setvisible(true)}>
-          <Ionicons name="language" size={34} color="black" 
-        style={{
-          padding:10,
-        }}/>
-          </TouchableOpacity>
+    <View style={styles.screen}>
+      {/* Header */}
+      <View style={styles.header}>
+        <Image source={require('./../assets/images/plain FC.png')} style={styles.logo} />
 
+        {/* Language Selector */}
+        <TouchableOpacity onPress={() => setVisible(true)}>
+          <Ionicons name="language" size={34} color="black" style={styles.languageIcon} />
+        </TouchableOpacity>
       </View>
-        <View style={styles.container}>
-            {/* iam buyer */}
-            <TouchableOpacity style={styles.button}
-              onPress={() => router.push('/(tabs)/home')}>
-                <Text style={{
-                    color:Colors.PRIMARY,
-                    textAlign:'center',
-                    fontFamily:'outfit-medium',
-                    fontSize:22,
-                    fontWeight:'bold'
-                }}>{t("I am a Buyer")}</Text>
-            </TouchableOpacity>
 
-            {/* iam seller */}
-            <TouchableOpacity style={styles.button2}
-                onPress={() => router.push('auth/sign-in')}
-            >
-            <Text style={{
-                color:Colors.WHITE,
-                textAlign:'center',
-                fontFamily:'outfit-medium',
-                fontSize:22,
-                fontWeight:'bold'
-            }}>{t("I am a Seller")}</Text>
-          </TouchableOpacity>
-          
+      {/* Language Selection Modal */}
+      <Modal visible={visible} transparent animationType="slide" onRequestClose={() => setVisible(false)}>
+        <View style={styles.modalContainer}>
+          <View style={styles.modalContent}>
+            <Image source={require('./../assets/images/plain FC.png')} style={styles.modalLogo} />
+            <Text style={styles.modalTitle}>Choose Your Language</Text>
+
+            <FlatList
+              data={Object.keys(languageResources)}
+              renderItem={({ item }) => (
+                <TouchableOpacity onPress={() => changeLng(item)} style={styles.languageOption}>
+                  <Text style={styles.languageText}>{languagesList[item].nativeName}</Text>
+                </TouchableOpacity>
+              )}
+              keyExtractor={(item) => item}
+            />
+          </View>
         </View>
+      </Modal>
+
+      {/* Main Container */}
+      <View style={styles.container}>
+        {/* Buyer Button */}
+        <TouchableOpacity style={styles.button} onPress={() => router.push('/(tabs)/home')}>
+          <Text style={styles.buyerText}>{t("I am a Buyer")}</Text>
+        </TouchableOpacity>
+
+        {/* Seller Button */}
+        <TouchableOpacity style={styles.sellerButton} onPress={() => router.push('auth/sign-in')}>
+          <Text style={styles.sellerText}>{t("I am a Seller")}</Text>
+        </TouchableOpacity>
+      </View>
     </View>
-  )
+  );
 }
+
 const styles = StyleSheet.create({
-  container:{
-    backgroundColor:Colors.WHITE,
-    marginTop:-20,
-    height: "100%",
-    borderTopLeftRadius:30,
-    borderTopRightRadius:30,
-    padding:25,
-    marginTop:1,
-    display:'flex',
-    justifyContent:'center',
-    alignItems:'center'
+  screen: {
+    flex: 1,
+    backgroundColor: Colors.gre,
+    paddingTop: 40,
   },
-
-  button:{
-    padding:15,
-    backgroundColor:Colors.GRAY,
-    borderRadius:99,
-
-    width:'70%'
+  header: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'space-between',
+    paddingHorizontal: 20,
+    marginBottom: 10,
   },
-  button2:{
-    padding:15,
-    backgroundColor:Colors.GREEN,
-    borderRadius:99,
-    marginTop:30,
-    width:'70%',
-    marginBottom:'60%'
+  logo: {
+    width: '50%',
+    height: 40,
+    resizeMode: 'contain',
   },
-
-  lng:{
-    flex:1,
-    justifyContent:'center',
-    padding:10,
-    backgroundColor:Colors.WHITE,
-    display:'flex',
-    justifyContent:'center',
-    alignItems:'center',
-    marginTop:'50%',
-    marginBottom:'50%',
-    padding:24,
-  },
-
-  lngButton:{
+  languageIcon: {
     padding: 10,
-    borderBottomColor: '#dddddd',
-    borderBottomWidth: 1,
   },
-  
-  lngName:{
-    fontSize: 16,
-    color: 'white',
-  }
-})
+  container: {
+    flex: 1,
+    justifyContent: 'center',
+    alignItems: 'center',
+    paddingHorizontal: 20,
+    borderTopLeftRadius: 30,
+    borderTopRightRadius: 30,
+    backgroundColor: Colors.WHITE,
+    paddingTop: 40,
+  },
+  button: {
+    paddingVertical: 15,
+    backgroundColor: Colors.GRAY,
+    borderRadius: 99,
+    width: '75%',
+    alignItems: 'center',
+  },
+  sellerButton: {
+    paddingVertical: 15,
+    backgroundColor: Colors.GREEN,
+    borderRadius: 99,
+    width: '75%',
+    alignItems: 'center',
+    marginTop: 20,
+  },
+  buyerText: {
+    color: Colors.PRIMARY,
+    fontSize: 22,
+    fontWeight: 'bold',
+  },
+  sellerText: {
+    color: Colors.WHITE,
+    fontSize: 22,
+    fontWeight: 'bold',
+  },
+  modalContainer: {
+    flex: 1,
+    justifyContent: 'center',
+    alignItems: 'center',
+    backgroundColor: 'rgba(0, 0, 0, 0.5)',
+  },
+  modalContent: {
+    width: '85%',
+    backgroundColor: Colors.WHITE,
+    borderRadius: 20,
+    padding: 20,
+    alignItems: 'center',
+    shadowColor: "#000",
+    shadowOpacity: 0.2,
+    shadowOffset: { width: 0, height: 2 },
+    shadowRadius: 4,
+  },
+  modalLogo: {
+    width: '60%',
+    height: 30,
+    resizeMode: 'contain',
+    marginBottom: 10,
+  },
+  modalTitle: {
+    fontSize: 24,
+    fontWeight: 'bold',
+    marginBottom: 15,
+  },
+  languageOption: {
+    paddingVertical: 10,
+    paddingHorizontal: 15,
+    borderWidth: 1,
+    borderRadius: 10,
+    marginVertical: 5,
+    width: '100%',
+    alignItems: 'center',
+  },
+  languageText: {
+    fontSize: 18,
+    fontWeight: '500',
+  },
+});
+
